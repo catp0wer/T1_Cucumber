@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>T1_Cucumber_simpliest</groupId>
-    <artifactId>T1_Cucumber_simpliest</artifactId>
+    <groupId>T1_Cucumber</groupId>
+    <artifactId>T1_Cucumber</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <build>
@@ -24,15 +24,15 @@
 
 
     <dependencies>
-    <dependency>
-        <groupId>info.cukes</groupId>
-        <artifactId>cucumber-java</artifactId>
-        <version>1.2.5</version>
-    </dependency>
         <dependency>
-            <groupId>info.cukes</groupId>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>4.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>1.2.5</version>
+            <version>4.5.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
