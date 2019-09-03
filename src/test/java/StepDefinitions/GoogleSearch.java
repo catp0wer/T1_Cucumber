@@ -13,6 +13,10 @@ import PageObjects.GoogleMainPage;
 import PageObjects.GoogleResultPage;
 import org.openqa.selenium.support.PageFactory;
 import org.assertj.core.api.SoftAssertions;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public class GoogleSearch {
@@ -20,8 +24,10 @@ public class GoogleSearch {
     private GoogleMainPage mainPage;
     private GoogleResultPage resultPage;
     private SoftAssertions softAssertions;
+    final static Logger logger = LoggerFactory.getLogger("GoogleSearch");
     @Before
     public void setUp() {
+        logger.info("****** Test starts ******");
         driver = DriverManager.getWebDriver();
         mainPage = new GoogleMainPage();
         resultPage = new GoogleResultPage();
@@ -32,18 +38,33 @@ public class GoogleSearch {
 
     @After
     public void tearDown(){
+        driver.quit();
+       List<Throwable> errors= softAssertions.errorsCollected();
+       if(errors.size()==0){
+           logger.info("Tests finished successfully");
+       }else {
+           logger.info("Number of errors {}", errors.size());
+           for (Throwable failure : errors) {
+               logger.error(failure.getMessage());
+           }
+           logger.info("Test failed");
+       }
         softAssertions.assertAll();
     }
 
     @Given("user opens Google")
     public void userOpensGoogle() {
         driver.navigate().to("https://www.google.com/");
+        logger.info("User navigates to https://www.google.com/");
     }
 
     @When("user enter '(.*)' in search")
     public void userEnterTextInSearch(String text) {
+
         mainPage.search(text);
+        logger.info("User enter `"+text+"` word in search field");
     }
+
 
     @And("click on Search")
     public void clickOnSearch() {
@@ -55,14 +76,14 @@ public class GoogleSearch {
     public void resultsContainTheWord(String word) {
         List<String> results = resultPage.getResultTitles();
         int resultCount = 0;
-        System.out.println(results.size());
-        System.out.println(results);
         for (String text : results) {
-          System.out.println(text);
-          softAssertions.assertThat(text.contains(word)).isTrue();
+            logger.debug("Step {} - Looking for `{}` in `{}`", resultCount, word, text);
+            softAssertions.assertThat(text.contains(word)).isTrue();
+
             resultCount++;
             //checking the word in the first 5 results
             if (resultCount == 5) {
+                logger.debug("The first 5 elements were checked");
                 break;
             }
         }
